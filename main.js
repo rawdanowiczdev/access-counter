@@ -3,9 +3,11 @@ const app = express();
 const fs = require("fs");
 
 app.get("/", (req, res, next) => {
-  const date = `${new Date().toLocaleString().replace(/\,/g, "")}\r\n`;
+  const date = new Date();
+  const file = date.toLocaleDateString().replace(/\//g, ".");
+  const log = `${date.toLocaleString().replace(/\,/g, "")}\r\n`;
 
-  fs.appendFile("./access.log", date, (err) => {
+  fs.appendFile(`./logs/${file}.log`, log, (err) => {
     if (err) {
       console.log(err);
     }
