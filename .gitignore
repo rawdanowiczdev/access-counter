@@ -1,0 +1,5 @@
+# dependencies
+/node_modules
+
+# it's readonly file not a part of the app
+/access.log
