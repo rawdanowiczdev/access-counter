@@ -2,4 +2,7 @@
 /node_modules
 
 # logs are read-only files not a part of the app
-/logs
+/logs/*
+
+# exception to keep /logs folder by itself
+!logs/.gitkeep
