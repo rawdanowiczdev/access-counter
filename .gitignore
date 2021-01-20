@@ -6,3 +6,6 @@
 
 # exception to keep /logs folder by itself
 !logs/.gitkeep
+
+# contains sensitive data
+.env
