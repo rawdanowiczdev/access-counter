@@ -4,8 +4,8 @@ const fs = require("fs");
 
 app.get("/", (req, res, next) => {
   const date = new Date();
-  const file = date.toLocaleDateString().replace(/\//g, ".");
-  const log = `${date.toLocaleString().replace(/\,/g, "")}\r\n`;
+  const file = date.toLocaleDateString("pl-PL");
+  const log = `${date.toLocaleString("pl-PL").replace(/\,/g, "")}\r\n`;
 
   fs.appendFile(`./logs/${file}.log`, log, (err) => {
     if (err) {
