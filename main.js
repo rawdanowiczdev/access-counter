@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-let date = undefined;
-let logsFile = undefined;
+let date;
+let log;
+let logFile;
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -17,16 +19,18 @@ const transporter = nodemailer.createTransport({
 
 app.get("/", (req, res, next) => {
   date = new Date();
-  logsFile = date.toLocaleDateString("pl-PL");
-  const log = `${date.toLocaleString("pl-PL").replace(/\,/g, "")}\r\n`;
+  log = `${date.toLocaleString("pl-PL").replace(/\,/g, "")}\r\n`;
+  logFile = date.toLocaleDateString("pl-PL");
 
-  fs.appendFile(`./logs/${logsFile}.log`, log, (err) => {
-    if (err) {
+  fs.appendFile(`./logs/${logFile}.log`, log, (err) => {
+    if (!err) {
+      console.log(log);
+    } else {
       console.log(err);
     }
-    console.log(date);
   });
 
+  res.status(201);
   next();
 });
 
@@ -35,19 +39,19 @@ app.get("/", (req, res, next) => {
     const mail = {
       from: "Marek Rawdanowicz mar.rawdanowicz@gmail.com",
       to: "marek.rawdanowicz@outlook.com",
-      subject: `rawdanowiczdev.pl ${logsFile} logs`,
+      subject: `rawdanowiczdev.pl ${logFile}.log`,
       attachments: [
         {
-          path: `./logs/${logsFile}.log`,
+          path: `./logs/${logFile}.log`,
         },
       ],
     };
 
-    transporter.sendMail(mail, (err, data) => {
-      if (err) {
-        console.log(err);
+    transporter.sendMail(mail, (err) => {
+      if (!err) {
+        console.log("Logs sent to marek.rawdanowicz@outlook.com");
       } else {
-        console.log("Logs sent.");
+        console.log(err);
       }
     });
   }
