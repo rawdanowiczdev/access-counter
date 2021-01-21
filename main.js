@@ -19,7 +19,7 @@ app.post("/", (req, res, next) => {
   const log = `${date.toLocaleString("pl-PL").replace(/\,/g, "")}\r\n`;
   const logFile = date.toLocaleDateString("pl-PL");
 
-  fs.appendFile(`/logs/${logFile}.log`, log, (err) => {
+  fs.appendFile(`./logs/${logFile}.log`, log, (err) => {
     if (!err && logFile) {
       console.log(log);
 
@@ -30,7 +30,7 @@ app.post("/", (req, res, next) => {
         text: `Somebody just accessed rawdanowiczdev.pl, log file attached.`,
         attachments: [
           {
-            path: `/logs/${logFile}.log`,
+            path: `./logs/${logFile}.log`,
           },
         ],
       };
