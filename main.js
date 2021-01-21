@@ -2,12 +2,8 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 
-const nodemailer = require("nodemailer");
 require("dotenv").config();
-
-let date;
-let log;
-let logFile;
+const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -17,44 +13,39 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.get("/", (req, res, next) => {
-  date = new Date();
-  log = `${date.toLocaleString("pl-PL").replace(/\,/g, "")}\r\n`;
-  logFile = date.toLocaleDateString("pl-PL");
+app.post("/", (req, res, next) => {
+  res.status(201);
+  const date = new Date();
+  const log = `${date.toLocaleString("pl-PL").replace(/\,/g, "")}\r\n`;
+  const logFile = date.toLocaleDateString("pl-PL");
 
-  fs.appendFile(`./logs/${logFile}.log`, log, (err) => {
-    if (!err) {
+  fs.appendFile(`/logs/${logFile}.log`, log, (err) => {
+    if (!err && logFile) {
       console.log(log);
+
+      const mail = {
+        from: "Marek Rawdanowicz mar.rawdanowicz@gmail.com",
+        to: "marek.rawdanowicz@outlook.com",
+        subject: `${logFile}.log`,
+        text: `Somebody just accessed rawdanowiczdev.pl, log file attached.`,
+        attachments: [
+          {
+            path: `/logs/${logFile}.log`,
+          },
+        ],
+      };
+
+      transporter.sendMail(mail, (err) => {
+        if (!err) {
+          console.log(`Logs sent to ${mail.to}`);
+        } else {
+          console.log(err);
+        }
+      });
     } else {
       console.log(err);
     }
   });
-
-  res.status(201);
-  next();
-});
-
-app.get("/", (req, res, next) => {
-  if (date) {
-    const mail = {
-      from: "Marek Rawdanowicz mar.rawdanowicz@gmail.com",
-      to: "marek.rawdanowicz@outlook.com",
-      subject: `rawdanowiczdev.pl ${logFile}.log`,
-      attachments: [
-        {
-          path: `./logs/${logFile}.log`,
-        },
-      ],
-    };
-
-    transporter.sendMail(mail, (err) => {
-      if (!err) {
-        console.log("Logs sent to marek.rawdanowicz@outlook.com");
-      } else {
-        console.log(err);
-      }
-    });
-  }
 
   res.end();
 });
