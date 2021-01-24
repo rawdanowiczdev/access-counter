@@ -1,14 +1,14 @@
 {
   "name": "access-counter",
   "version": "1.0.0",
-  "description": "Stores each user's request date in the access.log file.",
+  "description": "Stores each user's access date in the log file.",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon main.js"
   },
   "author": "Marek Rawdanowicz",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

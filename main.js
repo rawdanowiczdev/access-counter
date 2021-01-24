@@ -8,13 +8,12 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASSWORD,
+    user: process.env.EMAIL_SENDER,
+    pass: process.env.EMAIL_SENDER_PASSWORD,
   },
 });
 
 app.post("/", (req, res, next) => {
-  res.status(201);
   const date = new Date();
   const log = `${date.toLocaleString("pl-PL").replace(/\,/g, "")}\r\n`;
   const logFile = date.toLocaleDateString("pl-PL");
@@ -24,10 +23,10 @@ app.post("/", (req, res, next) => {
       console.log(log);
 
       const mail = {
-        from: "Marek Rawdanowicz mar.rawdanowicz@gmail.com",
-        to: "marek.rawdanowicz@outlook.com",
+        from: `Marek Rawdanowicz ${process.env.EMAIL_SENDER}`,
+        to: `${process.env.EMAIL_RECEIVER}`,
         subject: `${logFile}.log`,
-        text: `Somebody just accessed rawdanowiczdev.pl, log file attached.`,
+        text: "Somebody just accessed rawdanowiczdev.pl, log file attached.",
         attachments: [
           {
             path: `./logs/${logFile}.log`,
@@ -35,6 +34,7 @@ app.post("/", (req, res, next) => {
         ],
       };
 
+      console.log(`Logs sent to ${mail.to}`);
       transporter.sendMail(mail, (err) => {
         if (!err) {
           console.log(`Logs sent to ${mail.to}`);
@@ -47,7 +47,7 @@ app.post("/", (req, res, next) => {
     }
   });
 
-  res.end();
+  res.status(201).end();
 });
 
 app.listen(3000);
