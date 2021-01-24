@@ -4,10 +4,8 @@
   "description": "Stores each user's access date in the log file.",
   "main": "main.js",
   "scripts": {
-    "start": "tsc && pm2 start access-counter",
-    "compile": "tsc -w",
-    "start:dev": "nodemon -q ./dist/main.js",
-    "update-env": "pm2 start ecosystem.config.js --update-env"
+    "start": "pm2 start ecosystem.config.js --update-env",
+    "start:dev": "nodemon -q ./dist/main.js"
   },
   "author": "Marek Rawdanowicz",
   "license": "MIT",
