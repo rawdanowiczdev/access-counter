@@ -57,4 +57,4 @@ app.post("/", (req, res, next) => {
   res.status(201).end();
 });
 
-app.listen(3000);
+app.listen(process.env.PORT);
