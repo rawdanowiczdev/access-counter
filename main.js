@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 
-require("dotenv").config();
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -34,7 +33,6 @@ app.post("/", (req, res, next) => {
         ],
       };
 
-      console.log(`Logs sent to ${mail.to}`);
       transporter.sendMail(mail, (err) => {
         if (!err) {
           console.log(`Logs sent to ${mail.to}`);

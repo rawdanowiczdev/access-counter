@@ -8,4 +8,5 @@
 !logs/.gitkeep
 
 # contains sensitive data
-.env
+nodemon.json
+ecosystem.config.js
