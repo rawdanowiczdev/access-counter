@@ -8,5 +8,8 @@
 !logs/.gitkeep
 
 # contains sensitive data
-nodemon.json
+.env
 ecosystem.config.js
+
+# tsc output folder
+/dist
