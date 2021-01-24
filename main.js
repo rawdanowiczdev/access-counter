@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const nodemailer = require("nodemailer");
+const helmet = require("helmet");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -12,6 +13,8 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_SENDER_PASSWORD,
   },
 });
+
+app.use(helmet());
 
 app.post("/", (req, res, next) => {
   const date = new Date();
